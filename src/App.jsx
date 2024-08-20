@@ -1,9 +1,10 @@
-import './App.css'
-import FileUpload from './FileUpload'
+import FileUpload from './components/FileUpload'
+import HeaderCard from './components/HeaderCard';
 
 function App() {
   return (
     <div className='app'>
+      <HeaderCard></HeaderCard>
       <FileUpload></FileUpload>
      </div>
     )
