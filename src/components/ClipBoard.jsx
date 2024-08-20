@@ -27,10 +27,13 @@ function ClipBoard(props) {
       {chunks.map((chunk, chunkIndex) => {
         const chunkString = chunk.join(', ');
         return (
-          <div key={chunkIndex} className="border border-gray-700 rounded-lg p-4 shadow-lg flex flex-col items-end gap-4 bg-gray-800 mb-10">
-             <button onClick={() => copyToClipboard(chunkString)} className="mt-2 px-6 py-2 bg-blue-600 text-white rounded-lg  hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
-              Copy
-            </button>
+          <div key={chunkIndex} className="border border-gray-700 rounded-lg p-4 shadow-lg flex flex-col gap-4 bg-gray-800 mb-10">
+            <div className='flex justify-between'>
+              <div className='text-xl mt-4 ml-3'>{chunkIndex + 1}.</div>
+               <button onClick={() => copyToClipboard(chunkString)} className="mt-2 px-6 py-2 bg-blue-600 text-white rounded-lg  hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                Copy
+              </button>
+             </div>
             <textarea
               readOnly
               value={chunkString}
