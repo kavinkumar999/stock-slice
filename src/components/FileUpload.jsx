@@ -12,11 +12,10 @@ const FileUpload = () => {
   const [tickers, setTickers] = useState(null);
 
   const handleFileUpload = (event) => {
+    setError('');
     const selectedFile = event.target.files[0];
     if (!selectedFile) {
-      setData(null);
-      setTickers(null);
-      setFileData(null);
+      clearData();
       return;
     };
 
@@ -40,6 +39,11 @@ const FileUpload = () => {
       setError('Unsupported file format');
     }
   };
+   
+  const clearData = () => {
+    setTickers(null);
+    setData(null);
+  };
 
   const processFile = (action) => {
     if (action === 'clear') {
@@ -48,10 +52,14 @@ const FileUpload = () => {
     }
     if (!data || !fileExtension) return;
 
-    if (fileExtension === 'csv') {
-      handleCSV(data);
-    } else if (fileExtension === 'xls' || fileExtension === 'xlsx') {
-      handleExcel(data);
+    const handlers = {
+      'csv': handleCSV,
+      'xls': handleExcel,
+      'xlsx': handleExcel,
+    };
+
+    if (handlers[fileExtension]) {
+      handlers[fileExtension](data);
     } else {
       setError('Unsupported file format');
     }
