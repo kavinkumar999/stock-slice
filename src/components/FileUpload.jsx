@@ -1,37 +1,54 @@
 import React, { useState } from 'react';
 import Papa from 'papaparse';
 import * as XLSX from 'xlsx';
+import ticket from '../assets/ticket.png';
+import ClipBoard from './ClipBoard';
 
 const FileUpload = () => {
-  const [fileData, setFileData] = useState(null);
   const [error, setError] = useState('');
+  const [fileExtension, setFileExtension] = useState('');
+  const [data, setData] = useState(null);
+  const [fileData, setFileData] = useState(null);
 
   const handleFileUpload = (event) => {
-    const file = event.target.files[0];
-    const fileExtension = file.name.split('.').pop().toLowerCase();
+    const selectedFile = event.target.files[0];
+    if (!selectedFile) return;
 
-    if (!['csv', 'xls', 'xlsx'].includes(fileExtension)) {
-      setError('Please upload a CSV, XLS, or XLSX file.');
-      return;
-    }
+    const _fileExtension = selectedFile.name.split('.').pop().toLowerCase();
+    setFileExtension(_fileExtension);
 
-    setError('');
     const reader = new FileReader();
-
     reader.onload = (e) => {
-      const data = e.target.result;
-
-      if (fileExtension === 'csv') {
-        handleCSV(data);
-      } else {
-        handleExcel(data);
-      }
+      setData(e.target.result);
+    };
+    
+    reader.onerror = () => {
+      setError('Error reading file');
     };
 
-    if (fileExtension === 'csv') {
-      reader.readAsText(file);
+    if (_fileExtension === 'csv') {
+      reader.readAsText(selectedFile);
+    } else if (_fileExtension === 'xls' || _fileExtension === 'xlsx') {
+      reader.readAsArrayBuffer(selectedFile);
     } else {
-      reader.readAsBinaryString(file);
+      setError('Unsupported file format');
+    }
+  };
+
+  const processFile = () => {
+    if (fileData) {
+      setFileData([]);
+      setData(null);
+      return;
+    }
+    if (!data || !fileExtension) return;
+
+    if (fileExtension === 'csv') {
+      handleCSV(data);
+    } else if (fileExtension === 'xls' || fileExtension === 'xlsx') {
+      handleExcel(data);
+    } else {
+      setError('Unsupported file format');
     }
   };
 
@@ -41,32 +58,38 @@ const FileUpload = () => {
       complete: (result) => {
         setFileData(result.data);
       },
-      error: (error) => {
+      error: () => {
         setError('Error parsing CSV file');
       },
     });
   };
 
   const handleExcel = (data) => {
-    const workbook = XLSX.read(data, { type: 'binary' });
+    const workbook = XLSX.read(data, { type: 'array' });
     const firstSheetName = workbook.SheetNames[0];
     const worksheet = workbook.Sheets[firstSheetName];
     const jsonData = XLSX.utils.sheet_to_json(worksheet);
-    setFileData(jsonData);
+    let _data = jsonData.map((data) => data.__EMPTY_1);
+    _data = _data.slice(1);
+    _data = _data.map((tick) => "NSE:" + tick);
+    setFileData(_data);
   };
 
   return (
-    <div>
-      <h2>Upload and Analyze File</h2>
-      <input type="file" accept=".csv,.xls,.xlsx" onChange={handleFileUpload} />
-      {error && <p style={{ color: 'red' }}>{error}</p>}
-      {fileData && (
-        <div>
-          <h3>File Data:</h3>
-          <pre>{JSON.stringify(fileData, null, 2)}</pre>
-        </div>
-      )}
+   <div className='p-10 flex flex-col items-center'>
+    <div className='flex justify-center w-full'>
+      <input className='bg-gray-700 text-white rounded-2xl p-3 w-3/4 border border-gray-600' type="file" accept=".csv,.xls,.xlsx" onChange={handleFileUpload} />
     </div>
+    {error && <p className='text-red-500 mb-4'>{error}</p>}
+    {data && <button className='bg-green-400 hover:bg-green-500 text-black py-2 px-4 rounded-md mt-10' onClick={processFile}>
+      {!fileData ? 'Analyse' : 'Clear' } 
+    </button>}
+    {!fileData && <div className='mt-5 text-red-500'>*Use CSV, XLS, and XLSX file extension exported from chartink.com</div>}
+
+    {!fileData ? <img className='mt-5 w-full' src={ticket}></img> : <ClipBoard ticker={fileData}></ClipBoard>}
+  </div>
+
+
   );
 };
 
