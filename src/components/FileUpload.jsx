@@ -98,7 +98,7 @@ const FileUpload = () => {
     {data && <button className='bg-green-400 hover:bg-green-500 text-black py-2 px-4 rounded-md mt-10' onClick={() => processFile(!tickers ? 'analyse' : 'clear')}>
       {!tickers ? 'Analyse' : 'Clear' } 
     </button>}
-    {!tickers && <div className='mt-5 text-red-500'>*Use CSV, XLS, and XLSX file extension exported from chartink.com</div>}
+    {!tickers && <div className='mt-5 text-red-500 text-center'>*Use CSV, XLS, and XLSX file extension exported from chartink.com</div>}
 
     {!tickers ? <img className='mt-5 w-full' src={ticket}></img> : <ClipBoard ticker={tickers}></ClipBoard>}
   </div>
