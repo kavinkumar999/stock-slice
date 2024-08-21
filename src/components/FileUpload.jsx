@@ -8,7 +8,6 @@ const FileUpload = () => {
   const [error, setError] = useState('');
   const [fileExtension, setFileExtension] = useState('');
   const [data, setData] = useState(null);
-  const [fileData, setFileData] = useState(null);
   const [tickers, setTickers] = useState(null);
 
   const handleFileUpload = (event) => {
@@ -69,7 +68,8 @@ const FileUpload = () => {
     Papa.parse(data, {
       header: true,
       complete: (result) => {
-        setFileData(result.data);
+        let _data = result.data.map((data) => "NSE:" + data['Symbol'])
+        setTickers(_data);
       },
       error: () => {
         setError('Error parsing CSV file');
@@ -85,7 +85,6 @@ const FileUpload = () => {
     let _data = jsonData.map((data) => data.__EMPTY_1);
     _data = _data.slice(1);
     _data = _data.map((tick) => "NSE:" + tick);
-    setFileData(_data);
     setTickers(_data);
   };
 

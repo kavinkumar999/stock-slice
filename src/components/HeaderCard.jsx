@@ -9,7 +9,6 @@ const HeaderCard = () => {
         <img src={logo} alt="Logo" className='h-8 w-8'/>
         Stock Grid
       </h1>
-      <h2 className='text-xl mt-1'>Made with ❤️ by Kavin Kumar</h2>
     </header>
   )
 }
