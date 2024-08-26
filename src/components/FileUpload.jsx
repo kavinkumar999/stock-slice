@@ -99,7 +99,8 @@ const FileUpload = () => {
     </button>}
     {!tickers && <div className='mt-5 text-red-500 text-center'>*Use CSV, XLS, and XLSX file extension exported from chartink.com</div>}
 
-    {!tickers ? <img className='mt-5 w-full' src={ticket}></img> : <ClipBoard ticker={tickers}></ClipBoard>}
+      {!tickers ? <img className='mt-5 w-full' src={ticket}></img> : <ClipBoard ticker={tickers}></ClipBoard>}
+      <div className='text-gray-400'>@2024 Made with ❤️ by Kavin Kumar</div>
   </div>
 
 
