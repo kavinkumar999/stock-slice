@@ -1,6 +1,6 @@
-import React from 'react';
 
 function ClipBoard(props) {
+  // eslint-disable-next-line react/prop-types
   const { ticker } = props;
 
   // Function to split array into chunks of a given size

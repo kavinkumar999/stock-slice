@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import Papa from 'papaparse';
 import * as XLSX from 'xlsx';
 import ticket from '../assets/ticket.png';
