@@ -6,7 +6,7 @@ const HeaderCard = () => {
     <header className='flex p-5 justify-between'>
       <h1 className='title text-3xl font-bold flex gap-2'>
         <img src={logo} alt="Logo" className='h-8 w-8'/>
-        Stock Grid
+        Stock Slice
       </h1>
     </header>
   )
