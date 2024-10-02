@@ -13,4 +13,4 @@
 - Perfectly designed for TradingView's **free plan** limitations, ensuring you maximize your stock analysis without hassle.
 
 
-![image](https://github.com/user-attachments/assets/15da49d2-ccaa-439f-ada1-2062eec28c9d)
+![image](https://github.com/user-attachments/assets/ba4a642d-1695-4878-95b9-585bb5225885)
